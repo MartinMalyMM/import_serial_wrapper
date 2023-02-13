@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='ASCII'?>
+<ccp4:ccp4i2 xmlns:ccp4="http://www.ccp4.ac.uk/ccp4ns">
+  <ccp4i2_header>
+      <function>DEF</function>
+      <comment></comment>
+      <creationTime>Current</creationTime>
+      <userId>MartinMaly</userId>
+      <ccp4iVersion>0.0.1</ccp4iVersion>
+      <jobId/>
+      <project></project>
+      <pluginName>import_serial</pluginName>
+      <pluginVersion></pluginVersion>
+      <pluginTitle>Import Serial Data</pluginTitle>
+      <jobNumber></jobNumber>
+  </ccp4i2_header>
+  <ccp4i2_body id="import_serial">
+    <container id="inputData">
+        <content id="HKLIN">
+            <className>CGenericReflDataFile</className>
+            <qualifiers>
+                <guiLabel>Merged data file (I)</guiLabel>
+                <mustExist>True</mustExist>
+                <allowUndefined>False</allowUndefined>
+                <fromPreviousJob>False</fromPreviousJob>
+                <toolTip>Intensities from CrystFEL</toolTip>
+            </qualifiers>
+        </content>
+        <content id="HKLIN1">
+            <className>CGenericReflDataFile</className>
+            <qualifiers>
+                <guiLabel>Merged half data set (I)</guiLabel>
+                <mustExist>False</mustExist>
+                <allowUndefined>True</allowUndefined>
+                <fromPreviousJob>False</fromPreviousJob>
+                <toolTip>Intensities from CrystFEL - merged half data set</toolTip>
+            </qualifiers>
+        </content>
+        <content id="HKLIN2">
+            <className>CGenericReflDataFile</className>
+            <qualifiers>
+                <guiLabel>Merged half data set (I)</guiLabel>
+                <mustExist>False</mustExist>
+                <allowUndefined>True</allowUndefined>
+                <fromPreviousJob>False</fromPreviousJob>
+                <toolTip>Intensities from CrystFEL - merged half data set</toolTip>
+            </qualifiers>
+        </content>
+    </container>
+    <container id="outputData">
+      <content id="HKLOUT">
+        <className>CObsDataFile</className>
+        <qualifiers/>
+      </content>
+    </container>
+    <container id="inputParameters">
+          <content id="SPACEGROUP">
+            <className>CString</className>
+            <qualifiers>
+              <guiLabel>Space group</guiLabel>
+              <toolTip>Provide a target space group</toolTip>
+              <mustExist>True</mustExist>
+              <allowUndefined>False</allowUndefined>
+              <guiDefinition/>
+            </qualifiers>
+          </content>
+          <content id="CELL">
+            <className>CString</className>
+            <qualifiers>
+              <guiLabel>Unit cell</guiLabel>
+              <toolTip>Provide a target unit cell</toolTip>
+              <mustExist>True</mustExist>
+              <allowUndefined>False</allowUndefined>
+            </qualifiers>
+          </content>
+          <!--<container id="resolution">
+            <qualifiers>
+              <guiLabel>Resolution</guiLabel>
+              <guiDefinition/>
+            </qualifiers>-->
+            <content id="D_MAX">
+              <className>CFloat</className>
+              <qualifiers>
+                <guiLabel>Low resolution cutoff</guiLabel>
+                <toolTip>Low resolution cutoff.</toolTip>
+                <guiDefinition/>
+                <default>None</default>
+                <min>0.0</min>
+              </qualifiers>
+            </content>
+            <content id="D_MIN">
+              <className>CFloat</className>
+              <qualifiers>
+                <guiLabel>High resolution cutoff</guiLabel>
+                <toolTip>High resolution cutoff.</toolTip>
+                <guiDefinition/>
+                <default>None</default>
+                <min>0.0</min>
+              </qualifiers>
+            </content>
+            <content id="N_BINS">
+              <className>CInt</className>
+              <qualifiers>
+                <guiLabel>Number of resolution bins</guiLabel>
+                <toolTip>Number of resolution bins.</toolTip>
+                <guiDefinition/>
+                <default>10</default>
+                <min>1</min>
+              </qualifiers>
+            </content>
+      <!--</container>-->
+    </container>
+  </ccp4i2_body>
+</ccp4:ccp4i2>
