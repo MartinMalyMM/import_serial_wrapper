@@ -40,7 +40,12 @@ class import_serial(CPluginScript):
         if self.container.inputData.HKLIN1.isSet() and self.container.inputData.HKLIN2.isSet():
             self.hklin1 = self.container.inputData.HKLIN1.fullPath.__str__()
             self.hklin2 = self.container.inputData.HKLIN2.fullPath.__str__()
-        # TO DO: stream file
+        if self.container.inputData.REFERENCEFILE.isSet():
+            self.reference = self.container.inputData.REFERENCEFILE.fullPath.__str__()
+        if self.container.inputData.CELLFILE.isSet():
+            self.cellfile = self.container.inputData.CELLFILE.fullPath.__str__()
+        if self.container.inputData.STREAMFILE.isSet():
+            self.streamfile = self.container.inputData.STREAMFILE.fullPath.__str__()
         return CPluginScript.SUCCEEDED
 
     def makeCommandAndScript(self, container=None):
@@ -48,12 +53,14 @@ class import_serial(CPluginScript):
         self.appendCommandLine("import_serial")
         self.appendCommandLine("--hklin")
         self.appendCommandLine(str(self.hklin))
-        self.appendCommandLine("--spacegroup")
-        self.appendCommandLine(str(self.container.inputParameters.SPACEGROUP))
-        self.appendCommandLine("--cell")
-        cell_list = str(self.container.inputParameters.CELL).split()
-        for param in cell_list:
-            self.appendCommandLine(param)
+        if self.container.inputParameters.SPACEGROUP.isSet():
+            self.appendCommandLine("--spacegroup")
+            self.appendCommandLine(str(self.container.inputParameters.SPACEGROUP).strip())
+        if self.container.inputParameters.CELL.isSet():
+            self.appendCommandLine("--cell")
+            cell_list = str(self.container.inputParameters.CELL).split()
+            for param in cell_list:
+                self.appendCommandLine(param)
         # self.appendCommandLine(str(self.container.inputParameters.CELL))
         if self.container.inputData.HKLIN1.isSet() and self.container.inputData.HKLIN2.isSet():
             self.appendCommandLine("--half-dataset")
@@ -68,6 +75,17 @@ class import_serial(CPluginScript):
         if self.container.inputParameters.D_MAX.isSet():
             self.appendCommandLine("--dmax")
             self.appendCommandLine(str(self.container.inputParameters.D_MAX))
+        # --reference --cellfile --streamfile are not needed because
+        # symmetry should be specified using --spacegroup and --cell
+        if self.container.inputData.CELLFILE.isSet():
+            self.appendCommandLine("--cellfile")
+            self.appendCommandLine(str(self.cellfile))
+        if self.container.inputData.REFERENCEFILE.isSet():
+            self.appendCommandLine("--reference")
+            self.appendCommandLine(str(self.reference))
+        #if self.container.inputData.STREAMFILE.isSet():
+        #    self.appendCommandLine("--streamfile")
+        #    self.appendCommandLine(str(self.streamfile))
 
         # XML output 'program.xml' is produced by the command line application
         self.xmlout = self.makeFileName('PROGRAMXML')

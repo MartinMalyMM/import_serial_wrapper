@@ -26,7 +26,7 @@
             </qualifiers>
         </content>
         <content id="HKLIN1">
-            <className>CGenericReflDataFile</className>
+            <className>CDataFile</className>
             <qualifiers>
                 <guiLabel>Merged half data set (I)</guiLabel>
                 <mustExist>False</mustExist>
@@ -36,13 +36,53 @@
             </qualifiers>
         </content>
         <content id="HKLIN2">
-            <className>CGenericReflDataFile</className>
+            <className>CDataFile</className>
             <qualifiers>
                 <guiLabel>Merged half data set (I)</guiLabel>
                 <mustExist>False</mustExist>
                 <allowUndefined>True</allowUndefined>
                 <fromPreviousJob>False</fromPreviousJob>
                 <toolTip>Intensities from CrystFEL - merged half data set</toolTip>
+            </qualifiers>
+        </content>
+       <content id="SYMMETRY_SOURCE">
+          <className>CString</className>
+           <qualifiers>
+               <onlyEnumerators>True</onlyEnumerators>
+               <menuText>reference file, CrystFEL cell file, or calculate from CrystFEL stream file, or enter manually</menuText>
+               <enumerators>reference,cellfile,streamfile,manual</enumerators>
+               <default>reference</default>
+               <toolTip>Specify symmetry: space group and unit cell parameters</toolTip>
+           </qualifiers>
+       </content>
+        <content id="CELLFILE">
+            <className>CDataFile</className>
+            <qualifiers>
+                <guiLabel>Cell file from CrystFEL</guiLabel>
+                <mustExist>False</mustExist>
+                <allowUndefined>True</allowUndefined>
+                <fromPreviousJob>True</fromPreviousJob>
+                <toolTip>Cell file from CrystFEL</toolTip>
+            </qualifiers>
+        </content>
+        <content id="STREAMFILE">
+            <className>CDataFile</className>
+            <qualifiers>
+                <guiLabel>Stream file from CrystFEL</guiLabel>
+                <mustExist>False</mustExist>
+                <allowUndefined>True</allowUndefined>
+                <fromPreviousJob>True</fromPreviousJob>
+                <toolTip>Stream file from CrystFEL</toolTip>
+            </qualifiers>
+        </content>
+        <content id="REFERENCEFILE">
+            <className>CDataFile</className>
+            <qualifiers>
+                <guiLabel>Reference structure or data</guiLabel>
+                <mustExist>False</mustExist>
+                <allowUndefined>True</allowUndefined>
+                <fromPreviousJob>True</fromPreviousJob>
+                <toolTip>Reference PDB, mmCIF or MTZ file</toolTip>
             </qualifiers>
         </content>
     </container>
@@ -58,8 +98,8 @@
             <qualifiers>
               <guiLabel>Space group</guiLabel>
               <toolTip>Provide a target space group</toolTip>
-              <mustExist>True</mustExist>
-              <allowUndefined>False</allowUndefined>
+              <mustExist>False</mustExist>
+              <allowUndefined>True</allowUndefined>
               <guiDefinition/>
             </qualifiers>
           </content>
@@ -68,8 +108,8 @@
             <qualifiers>
               <guiLabel>Unit cell</guiLabel>
               <toolTip>Provide a target unit cell</toolTip>
-              <mustExist>True</mustExist>
-              <allowUndefined>False</allowUndefined>
+              <mustExist>False</mustExist>
+              <allowUndefined>True</allowUndefined>
             </qualifiers>
           </content>
           <!--<container id="resolution">
