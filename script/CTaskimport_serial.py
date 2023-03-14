@@ -47,6 +47,7 @@ class CTaskimport_serial(CCP4TaskWidget.CTaskWidget):
         self.createLine(['tip', 'Cell file from CrystFEL', 'widget', 'CELLFILE'], toggle=['SYMMETRY_SOURCE', 'open', 'cellfile'])
         self.connectDataChanged('CELLFILE', self.updateFromCellFile)
         self.createLine(['tip', 'Stream file from CrystFEL', 'widget', 'STREAMFILE'], toggle=['SYMMETRY_SOURCE', 'open', 'streamfile'])
+        self.connectDataChanged('STREAMFILE', self.updateFromCellFile)
         self.createLine(['label', 'Space group', 'widget', 'SPACEGROUP'])
         self.createLine(['label', 'Unit cell', 'widget', 'CELL', 'label', '(6 parameters divided by spaces)'])
         # TO DO: check that were given 6 floats
@@ -122,6 +123,47 @@ class CTaskimport_serial(CCP4TaskWidget.CTaskWidget):
         if os.path.isfile(self.container.inputData.REFERENCEFILE.fullPath.__str__()):
             cs, spacegroup, cell_string = get_cs_reference(self.container.inputData.REFERENCEFILE.fullPath.__str__())
             self.container.inputParameters.SPACEGROUP.set(spacegroup)
+            self.container.inputParameters.CELL.set(cell_string)
+        else:
+            # TO DO - ERROR
+            pass
+
+    def updateFromStreamFile(self):
+        def get_cell_streamfile(streamfile):
+            cell = [None, None, None, None, None, None]
+            cell_string = None
+            if os.path.isfile(streamfile + "_tmp"):
+                os.remove(streamfile + "_tmp")
+            with open(streamfile, "r") as file1:
+                with open(streamfile + "_tmp", "a+") as file2:
+                    for line in file1:
+                        if "Cell parameters " in line and len(line.split()) == 10:
+                            file2.write(line)
+            if os.path.isfile(streamfile + "_tmp"):
+                cell_df = pd.read_csv(
+                    streamfile + "_tmp", header=None, index_col=False, sep=r'\s+',
+                    names=("none1", "none2", "a", "b", "c", "none3", "alpha", "beta", "gamma", "none4"))
+                cell_df = cell_df.drop(columns=["none1", "none2", "none3", "none4"])
+                cell_df = cell_df.astype(float)
+                cell[0] = round(cell_df.mean()["a"] * 10, 2)
+                cell[1] = round(cell_df.mean()["b"] * 10, 2)
+                cell[2] = round(cell_df.mean()["c"] * 10, 2)
+                cell[3] = round(cell_df.mean()["alpha"], 2)
+                cell[4] = round(cell_df.mean()["beta"], 2)
+                cell[5] = round(cell_df.mean()["gamma"], 2)
+                cell_string = " ".join(map(str, cell))
+                print("")
+                print(f"Unit cell parameters fit using file {streamfile}:")
+                print(cell_string)
+                os.remove(streamfile + "_tmp")
+            else:
+                sys.stderr.write(
+                    f"WARNING: Unit cell parameters could not be fitted from "
+                    f"the file {streamfile}.\n")
+                cell = None
+            return cell, cell_string
+        if os.path.isfile(self.container.inputData.STREAMFILE.fullPath.__str__()):
+            cell, cell_string = get_cs_reference(self.container.inputData.STREAMFILE.fullPath.__str__())
             self.container.inputParameters.CELL.set(cell_string)
         else:
             # TO DO - ERROR

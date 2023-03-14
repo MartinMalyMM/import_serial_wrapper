@@ -83,9 +83,9 @@ class import_serial(CPluginScript):
         if self.container.inputData.REFERENCEFILE.isSet():
             self.appendCommandLine("--reference")
             self.appendCommandLine(str(self.reference))
-        #if self.container.inputData.STREAMFILE.isSet():
-        #    self.appendCommandLine("--streamfile")
-        #    self.appendCommandLine(str(self.streamfile))
+        if self.container.inputData.STREAMFILE.isSet():
+            self.appendCommandLine("--streamfile")
+            self.appendCommandLine(str(self.streamfile))
 
         # XML output 'program.xml' is produced by the command line application
         self.xmlout = self.makeFileName('PROGRAMXML')
